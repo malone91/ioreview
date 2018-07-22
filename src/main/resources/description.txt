@@ -1,0 +1,25 @@
+I/O库中，数据直接面向Stream写入或者读取，而在NIO库中，数据读取与写入面向的是Buffer对象，这种差异使性能得到了巨大提高。
+之前是一铲子一铲子，现在是用卡车，先将沙子装在卡车上，再一次性运走，Buffer充当了卡车的角色。
+缓冲区实际上是一个数组，NIO提供了Buffer抽象类，基于该抽象类，实现了一系Java基本类型的Buffer子类。
+
+缓冲区具有四个属性来提供关于其所包含的数据元素的信息。
+1、容量：capacity 缓冲区创建即被确定。
+2、上界：limit 缓冲区第一个不能被读写的元素，或者说是现存元素的个数。
+3、位置：position 下一个要被读写的元素的索引，位置会自动由相应的get和put函数更新。
+4、标记：Mark 一个备忘位置，调用Mark设定Mark=position。调用reset设定position=Mark。标记在设定前是未定义的。
+
+4个属性遵循以下关系：
+0 <= mark <= position <= limit <= capacity
+
+flip反转，写，然后读时使用。
+
+Channel是一个全双工通道，可以通过Channel实现同时读取与写入。
+Channel就是卡车行驶的道路。Channel传输的对象只能是Buffer对象，与Buffer不同，
+通道API主要由接口指定，不同的OS上通道实现会有很大的差异。
+
+通道的具体实现分为文件读写 与 网络读写
+
+FileChannel 从文件中读写数据。
+DatagramChannel 通过UDP协议读写网络数据。
+SocketChannel 通过TCP/IP读写网络数据，客户端连接通道。
+ServerSocketChannel SocketChannel对应的服务端通道实现，通过监听TCP/IP连接，对每个新的连接创建新的SocketChannel
